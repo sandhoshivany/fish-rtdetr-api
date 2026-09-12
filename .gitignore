@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Temporary files
+temp/
+*.tmp
+
+# Ultralytics runs
+runs/
+
+# Dataset images
+dataset/images/
+dataset/labels/
+
+# Large model files
+*.pt
+*.pth
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
