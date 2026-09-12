@@ -10,6 +10,9 @@ MODEL_PATH = "weights/bests.pt"
 # Strict minimum confidence for reasoning
 CONFIDENCE_THRESHOLD = 0.50
 
+# Smaller inference size reduces RAM usage
+IMAGE_SIZE = 640
+
 
 # ============================================================
 # LOAD MODEL ONCE
@@ -37,8 +40,10 @@ def detect_objects(image_path):
     results = model.predict(
         source=image_path,
         conf=CONFIDENCE_THRESHOLD,
+        imgsz=IMAGE_SIZE,
         save=False,
-        verbose=False
+        verbose=False,
+        device="cpu"
     )
 
     detections = []
