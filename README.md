@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Fish RT-DETR Object Detection System
 
 An end-to-end object detection system using RT-DETR and FastAPI.
@@ -43,3 +44,6 @@ The system decides whether object detection is required and then reasons over th
 
 ```bash
 uvicorn app.main:app --reload
+=======
+# fish-rtdetr-api
+>>>>>>> 7b7c52587fe0201a85296ac522a485222d7fc3c5
