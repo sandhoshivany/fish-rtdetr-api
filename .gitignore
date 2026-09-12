@@ -16,7 +16,7 @@ dataset/images/
 dataset/labels/
 
 # Large model files
-*.pt
+
 *.pth
 
 # Environment variables
