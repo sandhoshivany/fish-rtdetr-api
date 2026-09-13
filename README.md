@@ -206,7 +206,7 @@ model.train(
     data="data.yaml",
     epochs=50,
     imgsz=640,
-    batch=YOUR_BATCH_SIZE
+    batch=16
 )
 ```
 
