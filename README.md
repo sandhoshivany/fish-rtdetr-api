@@ -710,9 +710,8 @@ https://fish-rtdetr-api.onrender.com/
 https://fish-rtdetr-api.onrender.com/docs
 ```.
 
----
 
-# Reproducibility
+ Reproducibility
 
 The project documents:
 
@@ -731,9 +730,9 @@ The project documents:
 
 This allows another developer to reproduce the training and inference environment.
 
----
 
-# Technology Stack
+
+Technology Stack
 
 | Component        | Technology        |
 | ---------------- | ----------------- |
@@ -747,9 +746,8 @@ This allows another developer to reproduce the training and inference environmen
 | Documentation    | Swagger / OpenAPI |
 | Version Control  | Git + GitHub      |
 
----
 
-#  Constraints Compliance
+  Constraints Compliance
 
 | RAP Requirement                     | Implementation                               |
 | ----------------------------------- | -------------------------------------------- |
@@ -770,9 +768,7 @@ This allows another developer to reproduce the training and inference environmen
 | Failure analysis                    | ✅ Included                                   |
 | Docker                              | ✅ Supported                                  |
 
----
-
-#  Limitations
+  Limitations
 
 Despite strong performance on the held-out test set, the model has known limitations.
 
@@ -788,9 +784,8 @@ Performance can degrade when:
 
 The model's self-reported metrics should therefore not be interpreted as guaranteed performance on unseen data.
 
----
 
-#  Future Improvements
+  Future Improvements
 
 Potential improvements include:
 
@@ -805,28 +800,26 @@ Potential improvements include:
 * Model optimization for lower-latency inference
 * More robust natural-language intent routing
 
----
 
-#  Author
+ Author
 
 **Sandhoshivany G N**
 
 B.Tech — Artificial Intelligence & Data Science
 Sri Venkateswara College of Engineering
 
-### Links
+Links
 
 * GitHub: `https://github.com/sandhoshivany`
 * Portfolio: `https://portfolio-53a9.vercel.app/`
 * LinkedIn: `sandhoshivany-g-n-0381b2333`
 
----
 
-#  Key Takeaway
+  Key Takeaway
 
 This project demonstrates an end-to-end applied ML workflow:
 
-```text
+
 Dataset Selection
        ↓
 Data Preparation
@@ -846,6 +839,6 @@ Structured Detection Output
 Natural-Language Reasoning
        ↓
 Confidence-Aware Answer
-```
+
 
 The focus is not only on achieving a high detection score, but on understanding the model's behavior, limitations, reproducibility, and integration into a usable ML API.
