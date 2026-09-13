@@ -1,16 +1,14 @@
 from ultralytics import RTDETR
 
 DATASET = "dataset/data.yaml"
+CHECKPOINT = "weights/last.pt"
 
-model = RTDETR("rtdetr-l.pt")
+model = RTDETR(CHECKPOINT)
 
 model.train(
     data=DATASET,
-    epochs=10,
-    imgsz=416,
-    batch=1,
-    device="cpu",
-    workers=0,
-    project="runs",
-    name="fish_rtdetr"
+    epochs=50,
+    imgsz=640,
+    batch=16,
+    resume=True
 )
