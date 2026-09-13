@@ -1,45 +1,133 @@
-from ultralytics import RTDETR
+# ============================================================
+# REASONING MODULE
+# ============================================================
 
-# --------------------------------------------------
-# CONFIG
-# --------------------------------------------------
-
-MODEL_PATH = "../weights/bests.pt"
-DATASET_YAML = "../dataset/data.yaml"
-
-# --------------------------------------------------
-# LOAD MODEL
-# --------------------------------------------------
-
-model = RTDETR(MODEL_PATH)
-
-# --------------------------------------------------
-# EVALUATE ON TEST SET
-# --------------------------------------------------
-
-metrics = model.val(
-    data=DATASET_YAML,
-    split="test",
-    imgsz=640,
-    plots=True,
-    save_json=True
+# Keywords that indicate the question needs image detection
+DETECTION_KEYWORDS = (
+    "fish",
+    "species",
+    "identify",
+    "detected",
+    "detection",
+    "present",
+    "found",
+    "how many",
+    "count",
 )
 
-# --------------------------------------------------
-# RESULTS
-# --------------------------------------------------
 
-precision = metrics.box.mp
-recall = metrics.box.mr
-map50 = metrics.box.map50
-map50_95 = metrics.box.map
+# ============================================================
+# INTENT ROUTING
+# ============================================================
 
-f1 = 2 * (precision * recall) / (precision + recall)
+def needs_detector(question: str) -> bool:
+    """
+    Check whether the user's question requires
+    information from the uploaded image.
+    """
 
-print("\n========== TEST RESULTS ==========")
-print(f"Precision:       {precision:.4f} ({precision * 100:.2f}%)")
-print(f"Recall:          {recall:.4f} ({recall * 100:.2f}%)")
-print(f"mAP@0.50:        {map50:.4f} ({map50 * 100:.2f}%)")
-print(f"mAP@0.50:0.95:   {map50_95:.4f} ({map50_95 * 100:.2f}%)")
-print(f"F1-score:        {f1:.4f} ({f1 * 100:.2f}%)")
-print("==================================")
+    question = question.lower().strip()
+
+    return any(
+        keyword in question
+        for keyword in DETECTION_KEYWORDS
+    )
+
+
+# ============================================================
+# ANSWER GENERATION
+# ============================================================
+
+def answer_question(question: str, detections: list) -> str:
+    """
+    Generate an answer using only the confident
+    RT-DETR detections.
+    """
+
+    question = question.lower().strip()
+
+    # --------------------------------------------------------
+    # Safety check
+    # --------------------------------------------------------
+
+    if not detections:
+        return (
+            "Insufficient information: no sufficiently "
+            "confident fish detections were found in the image."
+        )
+
+    # --------------------------------------------------------
+    # Extract detected species
+    # --------------------------------------------------------
+
+    species = [
+        detection["class"]
+        for detection in detections
+    ]
+
+    unique_species = list(dict.fromkeys(species))
+
+    # --------------------------------------------------------
+    # Count question
+    # --------------------------------------------------------
+
+    if "how many" in question or "count" in question:
+        return (
+            f"There are {len(detections)} confidently "
+            f"detected fish in the image."
+        )
+
+    # --------------------------------------------------------
+    # Identification / species question
+    # --------------------------------------------------------
+
+    if any(
+        keyword in question
+        for keyword in (
+            "identify",
+            "species",
+            "which fish",
+            "what fish",
+            "what type",
+            "type of fish",
+        )
+    ):
+        if len(unique_species) == 1:
+            return (
+                f"The detected fish species is "
+                f"{unique_species[0]}."
+            )
+
+        return (
+            "The detected fish species are: "
+            f"{', '.join(unique_species)}."
+        )
+
+    # --------------------------------------------------------
+    # Presence / detection question
+    # --------------------------------------------------------
+
+    if any(
+        keyword in question
+        for keyword in (
+            "present",
+            "found",
+            "detected",
+            "in the image",
+        )
+    ):
+        return (
+            "The following fish species were confidently "
+            "detected: "
+            f"{', '.join(unique_species)}."
+        )
+
+    # --------------------------------------------------------
+    # Default response
+    # --------------------------------------------------------
+
+    return (
+        "Based on the confident RT-DETR detections, "
+        "the image contains: "
+        f"{', '.join(unique_species)}."
+    )
